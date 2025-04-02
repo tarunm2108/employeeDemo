@@ -4,3 +4,4 @@ part of 'add_employee_cubit.dart';
 sealed class AddEmployeeState {}
 
 final class AddEmployeeInitial extends AddEmployeeState {}
+

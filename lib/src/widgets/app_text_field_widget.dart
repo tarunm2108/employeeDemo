@@ -46,9 +46,9 @@ class AppTextFieldWidget extends StatelessWidget {
       onTap: onTap,
       style: textStyle ??
           const TextStyle().regular.copyWith(
-                color: Colors.black,
-                fontSize: 18,
-              ),
+              color: AppColors.color323238,
+              fontSize: 16,
+              fontWeight: FontWeight.w400),
       keyboardType: inputType,
       focusNode: node,
       readOnly: readOnly ?? false,
@@ -58,33 +58,34 @@ class AppTextFieldWidget extends StatelessWidget {
       textCapitalization: textCapitalization ?? TextCapitalization.none,
       decoration: decoration ??
           InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-                borderSide: BorderSide(width: 1, color: AppColors.colorE5E5E5),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-                borderSide: BorderSide(width: 1, color: AppColors.colorE5E5E5),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-                borderSide: BorderSide(width: 1, color: AppColors.colorE5E5E5),
-              ),
-              errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-                borderSide: const BorderSide(width: 1, color: Colors.red),
-              ),
-              isDense: true,
-              hintText: hintText,
-              contentPadding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-              hintStyle: const TextStyle().regular.copyWith(
-                    color: AppColors.color949C9E,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
-              suffixIcon: suffix,
-              prefixIcon: prefix,
-              prefixIconConstraints: const BoxConstraints(maxHeight: 30),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4),
+              borderSide: BorderSide(width: 1, color: AppColors.colorE5E5E5),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4),
+              borderSide: BorderSide(width: 1, color: AppColors.colorE5E5E5),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4),
+              borderSide: BorderSide(width: 1, color: AppColors.colorE5E5E5),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4),
+              borderSide: const BorderSide(width: 1, color: Colors.red),
+            ),
+            isDense: true,
+            hintText: hintText,
+            contentPadding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+            hintStyle: const TextStyle().regular.copyWith(
+                  color: AppColors.color949C9E,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                ),
+            suffixIcon: suffix,
+            prefixIcon: prefix,
+            prefixIconConstraints: const BoxConstraints(maxHeight: 30),
+            suffixIconConstraints: const BoxConstraints(maxHeight: 30),
           ),
       validator: validator,
     );
