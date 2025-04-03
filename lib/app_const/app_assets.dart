@@ -6,6 +6,8 @@ class AppAssets {
   static String icDropdown = "assets/icons/ic_dropdown.svg";
   static String icPerson = "assets/icons/ic_person.svg";
   static String icRole = "assets/icons/ic_role.svg";
+  static String icCalendarPrevious = "assets/icons/ic_calendar_previous.svg";
+  static String icCalendarNext = "assets/icons/ic_calendar_next.svg";
 
 
   ///Images

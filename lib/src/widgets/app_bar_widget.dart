@@ -6,19 +6,21 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
   final Widget? backButtonWidget;
   final bool? centerTitle;
+  final bool? automaticallyImplyLeading;
 
   const AppBarWidget({
     this.title,
     this.actions,
     this.backButtonWidget,
     this.centerTitle,
+    this.automaticallyImplyLeading,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      automaticallyImplyLeading: true,
+      automaticallyImplyLeading: automaticallyImplyLeading ?? false,
       leading: backButtonWidget,
       titleSpacing: 16,
       title: Text(

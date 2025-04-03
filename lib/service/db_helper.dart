@@ -1,4 +1,5 @@
 import 'package:employee_demo/model/employee.dart';
+import 'package:employee_demo/utils/logger.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -14,6 +15,8 @@ class DatabaseHelper {
 
   DatabaseHelper._internal();
 
+  String employeeTable = "employees";
+
   Future<Database> get database async {
     if (_database != null) return _database!;
     _database = await _initDatabase();
@@ -27,33 +30,44 @@ class DatabaseHelper {
       version: 1,
       onCreate: (db, version) async {
         await db.execute(
-            "CREATE TABLE IF NOT EXISTS employees(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, role TEXT, start_date TEXT, end_date TEXT)");
+            "CREATE TABLE IF NOT EXISTS $employeeTable(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, role TEXT, start_date TEXT, end_date TEXT)");
       },
     );
   }
 
   Future<int> addEmployee(Employee employee) async {
     final db = await database;
-    return await db.insert('employees', employee.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
+    final result = await db
+        .insert(employeeTable, employee.toMap(),
+            conflictAlgorithm: ConflictAlgorithm.replace)
+        .catchError((e) {
+      Logger.instance.printError(e);
+      return 0;
+    });
+    Logger.instance.printLog("addEmployee $result");
+    return result;
   }
 
   Future<int> updateEmployee(Employee employee) async {
     final db = await database;
-    return await db.update('employees', employee.toMap(),
+    return await db.update(employeeTable, employee.toMap(),
         where: 'id = ?', whereArgs: [employee.id]);
   }
 
-  Future<int> deleteEmployee(int id) async {
+  Future<int> deleteEmployee(int? id) async {
+    if(id == null || id < 0){
+      return -1;
+    }
     final db = await database;
-    return await db.delete('employees', where: 'id = ?', whereArgs: [id]);
+    return await db.delete(employeeTable, where: 'id = ?', whereArgs: [id]);
   }
 
   Future<List<Employee>> getEmployees() async {
     final db = await database;
-    final List<Map<String, dynamic>> maps = await db.query('employees');
-    return List.generate(maps.length, (i) {
+    final List<Map<String, dynamic>> maps = await db.query(employeeTable);
+    final list =  List.generate(maps.length, (i) {
       return Employee.fromMap(maps[i]);
     });
+    return list;
   }
 }
