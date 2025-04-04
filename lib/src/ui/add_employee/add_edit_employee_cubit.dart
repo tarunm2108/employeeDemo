@@ -9,6 +9,7 @@ import 'package:employee_demo/src/extensions/text_style_extension.dart';
 import 'package:employee_demo/src/widgets/app_button_widget.dart';
 import 'package:employee_demo/src/widgets/svg_image_widget.dart';
 import 'package:employee_demo/utils/utility.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -111,59 +112,138 @@ class AddEditEmployeeCubit extends Cubit<AddEditEmployeeState> {
     showDialog(
       context: context,
       builder: (_) {
-        return StatefulBuilder(builder: (context, setState) {
-          return Dialog(
-            backgroundColor: Colors.white,
-            insetPadding: const EdgeInsets.all(16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      type == DateType.start
-                          ? Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Dialog(
+              backgroundColor: Colors.white,
+              insetPadding: const EdgeInsets.all(16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: SizedBox(
+                width: kIsWeb ? 420 : null,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          type == DateType.start
+                              ? Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: AppButtonWidget(
+                                            onPressed: () {
+                                              selectedDate = DateTime.now();
+                                              setState(() {});
+                                            },
+                                            title: AppStrings.instance.today,
+                                            textColor:
+                                                selectedDate == DateTime.now()
+                                                    ? null
+                                                    : AppColors.color1DA1F2,
+                                            bgColor:
+                                                selectedDate == DateTime.now()
+                                                    ? null
+                                                    : AppColors.colorEDF8FF,
+                                            style: const TextStyle()
+                                                .regular
+                                                .copyWith(
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 14,
+                                                  color: AppColors.color1DA1F2,
+                                                ),
+                                          ),
+                                        ),
+                                        16.toWidth,
+                                        Expanded(
+                                          flex: 1,
+                                          child: AppButtonWidget(
+                                            onPressed: () {
+                                              getNextWeekday(1);
+                                              setState(() {});
+                                            },
+                                            title:
+                                                AppStrings.instance.nextMonday,
+                                            style: const TextStyle()
+                                                .regular
+                                                .copyWith(
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 14,
+                                                  color: Colors.white,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    16.toHeight,
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: AppButtonWidget(
+                                            onPressed: () {
+                                              getNextWeekday(2);
+                                              setState(() {});
+                                            },
+                                            title:
+                                                AppStrings.instance.nextTuesday,
+                                            textColor: AppColors.color1DA1F2,
+                                            bgColor: AppColors.colorEDF8FF,
+                                            style: const TextStyle()
+                                                .regular
+                                                .copyWith(
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 14,
+                                                  color: AppColors.color1DA1F2,
+                                                ),
+                                          ),
+                                        ),
+                                        16.toWidth,
+                                        Expanded(
+                                          flex: 1,
+                                          child: AppButtonWidget(
+                                            onPressed: () {
+                                              final date = DateTime.now()
+                                                  .add(const Duration(days: 7));
+                                              if (date.isAfter(minDate) &&
+                                                  date.isBefore(maxDate)) {
+                                                selectedDate = date;
+                                                setState(() {});
+                                              }
+                                            },
+                                            title: AppStrings
+                                                .instance.afterOneWeek,
+                                            textColor: AppColors.color1DA1F2,
+                                            bgColor: AppColors.colorEDF8FF,
+                                            style: const TextStyle()
+                                                .regular
+                                                .copyWith(
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 14,
+                                                  color: AppColors.color1DA1F2,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                )
+                              : Row(
                                   children: [
                                     Expanded(
                                       flex: 1,
                                       child: AppButtonWidget(
                                         onPressed: () {
-                                          selectedDate = DateTime.now();
                                           setState(() {});
                                         },
-                                        title: AppStrings.instance.today,
-                                        textColor:
-                                            selectedDate == DateTime.now()
-                                                ? null
-                                                : AppColors.color1DA1F2,
-                                        bgColor: selectedDate == DateTime.now()
-                                            ? null
-                                            : AppColors.colorEDF8FF,
-                                        style:
-                                            const TextStyle().regular.copyWith(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 14,
-                                                  color: AppColors.color1DA1F2,
-                                                ),
-                                      ),
-                                    ),
-                                    16.toWidth,
-                                    Expanded(
-                                      flex: 1,
-                                      child: AppButtonWidget(
-                                        onPressed: () {
-                                          getNextWeekday(1);
-                                          setState(() {});
-                                        },
-                                        title: AppStrings.instance.nextMonday,
+                                        title: AppStrings.instance.noDate,
                                         style:
                                             const TextStyle().regular.copyWith(
                                                   fontWeight: FontWeight.w400,
@@ -172,43 +252,15 @@ class AddEditEmployeeCubit extends Cubit<AddEditEmployeeState> {
                                                 ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                                16.toHeight,
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: AppButtonWidget(
-                                        onPressed: () {
-                                          getNextWeekday(2);
-                                          setState(() {});
-                                        },
-                                        title: AppStrings.instance.nextTuesday,
-                                        textColor: AppColors.color1DA1F2,
-                                        bgColor: AppColors.colorEDF8FF,
-                                        style:
-                                            const TextStyle().regular.copyWith(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 14,
-                                                  color: AppColors.color1DA1F2,
-                                                ),
-                                      ),
-                                    ),
                                     16.toWidth,
                                     Expanded(
                                       flex: 1,
                                       child: AppButtonWidget(
                                         onPressed: () {
-                                          final date = DateTime.now()
-                                              .add(const Duration(days: 7));
-                                          if (date.isAfter(minDate) &&
-                                              date.isBefore(maxDate)) {
-                                            selectedDate = date;
-                                            setState(() {});
-                                          }
+                                          selectedDate = DateTime.now();
+                                          setState(() {});
                                         },
-                                        title: AppStrings.instance.afterOneWeek,
+                                        title: AppStrings.instance.today,
                                         textColor: AppColors.color1DA1F2,
                                         bgColor: AppColors.colorEDF8FF,
                                         style:
@@ -221,193 +273,168 @@ class AddEditEmployeeCubit extends Cubit<AddEditEmployeeState> {
                                     ),
                                   ],
                                 ),
-                              ],
-                            )
-                          : Row(
+                        ],
+                      ),
+                    ),
+                    24.toHeight,
+                    TableCalendar(
+                      firstDay: minDate,
+                      lastDay: maxDate,
+                      focusedDay: selectedDate,
+                      // currentDay: selectedDate,
+                      selectedDayPredicate: (day) {
+                        return isSameDay(selectedDate, day);
+                      },
+                      onDaySelected: (selectedDay, focusedDay) {
+                        selectedDate = selectedDay;
+                        setState(() {});
+                      },
+                      calendarBuilders: CalendarBuilders(
+                        headerTitleBuilder: (_, date) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 14),
+                            child: Row(
                               children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: AppButtonWidget(
-                                    onPressed: () {
-                                      setState(() {});
-                                    },
-                                    title: AppStrings.instance.noDate,
-                                    style: const TextStyle().regular.copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 14,
-                                          color: Colors.white,
-                                        ),
+                                const Spacer(),
+                                InkWell(
+                                  onTap: () {
+                                    _goToPreviousMonth();
+                                    setState(() {});
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12),
+                                    child: SvgImageWidget(
+                                        source: AppAssets.icCalendarPrevious),
                                   ),
                                 ),
-                                16.toWidth,
-                                Expanded(
-                                  flex: 1,
-                                  child: AppButtonWidget(
-                                    onPressed: () {
-                                      selectedDate = DateTime.now();
-                                      setState(() {});
-                                    },
-                                    title: AppStrings.instance.today,
-                                    textColor: AppColors.color1DA1F2,
-                                    bgColor: AppColors.colorEDF8FF,
-                                    style: const TextStyle().regular.copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 14,
-                                          color: AppColors.color1DA1F2,
-                                        ),
+                                Text(
+                                  DateFormat('MMMM yyyy').format(date),
+                                  style: const TextStyle().regular.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 18,
+                                        color: AppColors.color323238,
+                                      ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    _goToNextMonth();
+                                    setState(() {});
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12),
+                                    child: SvgImageWidget(
+                                        source: AppAssets.icCalendarNext),
                                   ),
                                 ),
+                                const Spacer(),
                               ],
                             ),
-                    ],
-                  ),
-                ),
-                24.toHeight,
-                TableCalendar(
-                  firstDay: minDate,
-                  lastDay: maxDate,
-                  focusedDay: selectedDate,
-                  // currentDay: selectedDate,
-                  selectedDayPredicate: (day) {
-                    return isSameDay(selectedDate, day);
-                  },
-                  onDaySelected: (selectedDay, focusedDay) {
-                    selectedDate = selectedDay;
-                    setState(() {});
-                  },
-                  calendarBuilders: CalendarBuilders(
-                    headerTitleBuilder: (_, date) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 14),
-                        child: Row(
-                          children: [
-                            const Spacer(),
-                            InkWell(
-                              onTap: () {
-                                _goToPreviousMonth();
-                                setState(() {});
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: SvgImageWidget(
-                                    source: AppAssets.icCalendarPrevious),
-                              ),
-                            ),
-                            Text(
-                              DateFormat('MMMM yyyy').format(date),
-                              style: const TextStyle().regular.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 18,
-                                    color: AppColors.color323238,
-                                  ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                _goToNextMonth();
-                                setState(() {});
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: SvgImageWidget(
-                                    source: AppAssets.icCalendarNext),
-                              ),
-                            ),
-                            const Spacer(),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                  headerStyle: const HeaderStyle(
-                    leftChevronVisible: false,
-                    rightChevronVisible: false,
-                    formatButtonVisible: false,
-                    titleCentered: true,
-                  ),
-                  daysOfWeekStyle: const DaysOfWeekStyle(),
-                  calendarStyle: CalendarStyle(
-                      todayDecoration: BoxDecoration(
-                        border:
-                            Border.all(color: AppColors.color1DA1F2, width: 1),
-                        shape: BoxShape.circle,
-                      ),
-                      selectedDecoration: BoxDecoration(
-                        color: AppColors.color1DA1F2,
-                        shape: BoxShape.circle,
-                      ),
-                      defaultTextStyle: const TextStyle().regular.copyWith(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.color323238),
-                      todayTextStyle: const TextStyle().regular.copyWith(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.color323238),
-                      tablePadding: const EdgeInsets.symmetric(horizontal: 16)),
-                  onCalendarCreated: (controller) =>
-                      _pageController = controller,
-                ),
-                20.toHeight,
-                Divider(
-                  height: 0,
-                  thickness: 1,
-                  color: AppColors.colorF2F2F2,
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      SvgImageWidget(source: AppAssets.icCalendar),
-                      12.toWidth,
-                      Text(
-                        DateFormat('dd MMM yyyy').format(selectedDate),
-                        style: const TextStyle().regular.copyWith(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              color: AppColors.color323238,
-                            ),
-                      ),
-                      const Spacer(),
-                      AppButtonWidget(
-                        onPressed: () => Navigation.instance.pop(),
-                        title: AppStrings.instance.cancel,
-                        width: 75,
-                        textColor: AppColors.color1DA1F2,
-                        bgColor: AppColors.colorEDF8FF,
-                      ),
-                      16.toWidth,
-                      AppButtonWidget(
-                        onPressed: () {
-                          if (type == DateType.start) {
-                            startDate = selectedDate;
-                            startDateCtrl.text =
-                                DateFormat('dd MMM yyyy').format(selectedDate);
-                          } else {
-                            if (startDate != null &&
-                                selectedDate.isBefore(startDate!)) {
-                              Navigation.instance.pop();
-                              Utility.showToast(context,
-                                  AppStrings.instance.pleaseSelectValidDate);
-                              return;
-                            }
-                            endDate = selectedDate;
-                            endDateCtrl.text =
-                                DateFormat('dd MMM yyyy').format(selectedDate);
-                          }
-                          Navigation.instance.pop();
+                          );
                         },
-                        title: AppStrings.instance.save,
-                        width: 75,
-                      )
-                    ],
-                  ),
+                      ),
+                      headerStyle: const HeaderStyle(
+                        leftChevronVisible: false,
+                        rightChevronVisible: false,
+                        formatButtonVisible: false,
+                        titleCentered: true,
+                      ),
+                      daysOfWeekStyle: const DaysOfWeekStyle(),
+                      calendarStyle: CalendarStyle(
+                          todayDecoration: BoxDecoration(
+                            border: Border.all(
+                                color: AppColors.color1DA1F2, width: 1),
+                            shape: BoxShape.circle,
+                          ),
+                          selectedDecoration: BoxDecoration(
+                            color: AppColors.color1DA1F2,
+                            shape: BoxShape.circle,
+                          ),
+                          defaultTextStyle: const TextStyle().regular.copyWith(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.color323238),
+                          todayTextStyle: const TextStyle().regular.copyWith(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.color323238),
+                          tablePadding:
+                              const EdgeInsets.symmetric(horizontal: 16)),
+                      onCalendarCreated: (controller) =>
+                          _pageController = controller,
+                    ),
+                    20.toHeight,
+                    Divider(
+                      height: 0,
+                      thickness: 1,
+                      color: AppColors.colorF2F2F2,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SvgImageWidget(source: AppAssets.icCalendar),
+                          12.toWidth,
+                          Text(
+                            DateFormat('dd MMM yyyy').format(selectedDate),
+                            style: const TextStyle().regular.copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 16,
+                                  color: AppColors.color323238,
+                                ),
+                          ),
+                          const Spacer(),
+                          AppButtonWidget(
+                            onPressed: () => Navigation.instance.pop(),
+                            title: AppStrings.instance.cancel,
+                            width: 75,
+                            textColor: AppColors.color1DA1F2,
+                            bgColor: AppColors.colorEDF8FF,
+                          ),
+                          16.toWidth,
+                          AppButtonWidget(
+                            onPressed: () {
+                              if (type == DateType.start) {
+                                if (endDate != null &&
+                                    selectedDate.isAfter(endDate!)) {
+                                  Navigation.instance.pop();
+                                  Utility.showToast(
+                                      context,
+                                      AppStrings
+                                          .instance.pleaseSelectValidDate);
+                                  return;
+                                }
+                                startDate = selectedDate;
+                                startDateCtrl.text = DateFormat('dd MMM yyyy')
+                                    .format(selectedDate);
+                              } else {
+                                if (startDate != null &&
+                                    selectedDate.isBefore(startDate!)) {
+                                  Navigation.instance.pop();
+                                  Utility.showToast(
+                                      context,
+                                      AppStrings
+                                          .instance.pleaseSelectValidDate);
+                                  return;
+                                }
+                                endDate = selectedDate;
+                                endDateCtrl.text = DateFormat('dd MMM yyyy')
+                                    .format(selectedDate);
+                              }
+                              Navigation.instance.pop();
+                            },
+                            title: AppStrings.instance.save,
+                            width: 75,
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          );
-        },
+              ),
+            );
+          },
         );
       },
     );
