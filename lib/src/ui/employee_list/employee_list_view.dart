@@ -59,7 +59,10 @@ Widget _body(EmployeeListState state, BuildContext context) {
                 },
                 separatorBuilder: (_, index) {
                   return Divider(
-                      color: AppColors.colorF2F2F2, height: 0, thickness: 1);
+                    color: AppColors.colorF2F2F2,
+                    height: 0,
+                    thickness: 1,
+                  );
                 },
                 itemCount: state.employeeList?.length ?? 0,
                 shrinkWrap: true,
@@ -89,68 +92,91 @@ Widget _body(EmployeeListState state, BuildContext context) {
 }
 
 Widget _listItem(Employee? item, int index, BuildContext context) {
-  return Slidable(
-    key: ValueKey(index),
-    closeOnScroll: true,
-    endActionPane: ActionPane(
-      motion: const ScrollMotion(),
-      extentRatio: 0.2,
-      children: [
-        CustomSlidableAction(
-          onPressed: (_) {
-            context
-                .read<EmployeeListCubit>()
-                .deleteEmployee(item, context, index);
-          },
-          backgroundColor: AppColors.colorF34642,
-          autoClose: true,
-          child: SvgImageWidget(source: AppAssets.icDelete, height: 21),
-        ),
-      ],
-    ),
-    child: InkWell(
-      onTap: (){
-        context.read<EmployeeListCubit>().onEmployeeTap(item);
-      },
-      child: Container(
-        width: double.maxFinite,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 16,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+  final separator =
+      context.read<EmployeeListCubit>().getSeparateDate(item?.startDate,index);
+  return Column(
+    mainAxisSize: MainAxisSize.min,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      separator.isNotEmpty
+          ? Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+              decoration: BoxDecoration(color: AppColors.colorE5E5E5),
+              child: Text(
+                separator,
+                style: const TextStyle().regular.copyWith(
+                      color: AppColors.color1DA1F2,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                    ),
+              ),
+            )
+          : const SizedBox.shrink(),
+      Slidable(
+        key: ValueKey(index),
+        closeOnScroll: true,
+        endActionPane: ActionPane(
+          motion: const ScrollMotion(),
+          extentRatio: 0.2,
           children: [
-            Text(
-              item?.name ?? "Employee",
-              style: const TextStyle().bold.copyWith(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: AppColors.color323238,
-                  ),
-            ),
-            6.toHeight,
-            Text(
-              item?.role ?? "N/A",
-              style: const TextStyle().regular.copyWith(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    color: AppColors.color949C9E,
-                  ),
-            ),
-            6.toHeight,
-            Text(
-              "From }",
-              style: const TextStyle().bold.copyWith(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    color: AppColors.color949C9E,
-                  ),
+            CustomSlidableAction(
+              onPressed: (_) {
+                context
+                    .read<EmployeeListCubit>()
+                    .deleteEmployee(item, context, index);
+              },
+              backgroundColor: AppColors.colorF34642,
+              autoClose: true,
+              child: SvgImageWidget(source: AppAssets.icDelete, height: 21),
             ),
           ],
         ),
+        child: InkWell(
+          onTap: () {
+            context.read<EmployeeListCubit>().onEmployeeTap(item);
+          },
+          child: Container(
+            width: double.maxFinite,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 16,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item?.name ?? "Employee",
+                  style: const TextStyle().bold.copyWith(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                        color: AppColors.color323238,
+                      ),
+                ),
+                6.toHeight,
+                Text(
+                  item?.role ?? "N/A",
+                  style: const TextStyle().regular.copyWith(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        color: AppColors.color949C9E,
+                      ),
+                ),
+                6.toHeight,
+                Text(
+                  "From ${item?.startDate ?? AppStrings.instance.noDate}",
+                  style: const TextStyle().bold.copyWith(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        color: AppColors.color949C9E,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
-    ),
+    ],
   );
 }

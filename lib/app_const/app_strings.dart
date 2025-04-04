@@ -19,4 +19,9 @@ class AppStrings {
   String swipeLeftToDelete = "Swipe left to delete";
   String editEmployeeDetails = "Edit Employee Details";
   String fieldCanNotBeEmpty = "Field can't be empty";
+  String today = "Today";
+  String nextMonday = "Next Monday";
+  String nextTuesday = "Next Tuesday";
+  String afterOneWeek = "After 1 week";
+  String pleaseSelectValidDate = "Please select valid date";
 }

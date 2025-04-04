@@ -4,7 +4,7 @@ import 'package:employee_demo/src/widgets/loader_widget.dart';
 import 'package:flutter/material.dart';
 
 class AppButtonWidget extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final String title;
   final bool? showLoader;
   final EdgeInsets? margin;
@@ -12,6 +12,7 @@ class AppButtonWidget extends StatelessWidget {
   final Color? textColor;
   final Color? bgColor;
   final double? width;
+  final TextStyle? style;
 
   const AppButtonWidget({
     required this.onPressed,
@@ -22,6 +23,7 @@ class AppButtonWidget extends StatelessWidget {
     this.textColor,
     this.bgColor,
     this.width,
+    this.style,
     super.key,
   });
 
@@ -44,7 +46,7 @@ class AppButtonWidget extends StatelessWidget {
               child: Text(
                 title,
                 textAlign: TextAlign.center,
-                style: const TextStyle().bold.copyWith(
+                style: style ?? const TextStyle().bold.copyWith(
                       fontSize: 15,
                       color: textColor ?? Colors.white,
                     ),

@@ -117,7 +117,7 @@ class AddEditEmployeeView extends StatelessWidget {
                             ),
                             readOnly: true,
                             onTap: () =>
-                                cubit.showDatePicker(context, DateType.start),
+                                cubit.showCalendar(context, DateType.start),
                           ),
                         ),
                         16.toWidth,

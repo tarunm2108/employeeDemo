@@ -7,14 +7,19 @@ import 'package:employee_demo/service/navigation.dart';
 import 'package:employee_demo/src/extensions/text_style_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 part 'employee_list_state.dart';
 
 class EmployeeListCubit extends Cubit<EmployeeListState> {
   EmployeeListCubit() : super(EmployeeListInitial());
+  String groupByMonth = "";
 
   Future<void> init() async {
     final list = await DatabaseHelper.instance.getEmployees();
+    list.sort((a, b) => DateFormat("dd MMM yyyy")
+        .parse(b.startDate ?? '')
+        .compareTo(DateFormat("dd MMM yyyy").parse(a.startDate ?? '')));
     if (list.isNotEmpty) {
       emit(EmployeeListLoaded(employeeList: list));
     } else {
@@ -33,7 +38,11 @@ class EmployeeListCubit extends Cubit<EmployeeListState> {
   void deleteEmployee(Employee? item, BuildContext context, index) {
     final lastState = state as EmployeeListLoaded;
     lastState.employeeList?.remove(item);
-    emit(EmployeeListLoaded(employeeList: lastState.employeeList));
+    if (lastState.employeeList?.isNotEmpty ?? false) {
+      emit(EmployeeListLoaded(employeeList: lastState.employeeList));
+    } else {
+      emit(EmployeeListNoData());
+    }
     ScaffoldMessenger.of(context)
         .showSnackBar(
           SnackBar(
@@ -50,7 +59,7 @@ class EmployeeListCubit extends Cubit<EmployeeListState> {
               onPressed: () {},
               textColor: AppColors.color1DA1F2,
             ),
-            duration: const Duration(seconds: 4),
+            duration: const Duration(seconds: 3),
           ),
         )
         .closed
@@ -61,6 +70,7 @@ class EmployeeListCubit extends Cubit<EmployeeListState> {
             Employee(
               id: item?.id,
               name: item?.name,
+              role: item?.role,
               startDate: item?.startDate,
               endDate: item?.endDate,
             ));
@@ -72,10 +82,30 @@ class EmployeeListCubit extends Cubit<EmployeeListState> {
   }
 
   Future<void> onEmployeeTap(Employee? item) async {
-    final result =
-        await Navigation.instance.navigateTo(AppRoutes.addEmployeeView,arg: item);
+    final result = await Navigation.instance
+        .navigateTo(AppRoutes.addEmployeeView, arg: item);
     if (result != null && result) {
       init();
+    }
+  }
+
+  String getSeparateDate(String? date, int index) {
+    if (date == null) {
+      return "";
+    }
+    final startDate = DateFormat("dd MMM yyyy").parse(date);
+    final lastState = state as EmployeeListLoaded;
+    if (index == 0) {
+      return DateFormat("MMMM yyyy").format(startDate);
+    } else {
+      int previousIndex = index - 1;
+      final preDate = DateFormat("dd MMM yyyy")
+          .parse(lastState.employeeList?[previousIndex].startDate ?? '');
+      if (DateFormat("MMMM yyyy").format(startDate).toLowerCase() ==
+          DateFormat("MMMM yyyy").format(preDate).toLowerCase()) {
+        return '';
+      }
+      return DateFormat("MMMM yyyy").format(startDate);
     }
   }
 }
